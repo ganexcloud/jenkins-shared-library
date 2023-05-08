@@ -14,6 +14,7 @@ def call(String action) {
     }
   }
   final file = libraryResource('jenkins-squadcast-notifications.py')
+  writeFile(file: 'jenkins-squadcast-notifications.py', text: file)
   withCredentials([string(credentialsId: "${SQUADCAST_URL}", variable: 'SQUADCAST_URL')]) {
     sh "python3 jenkins-squadcast-notifications.py $additionalArgs"
   }
