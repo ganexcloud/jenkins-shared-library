@@ -14,10 +14,6 @@ Pipeline Shared Libraries plugin
 
 Other plugins may be required for specific library calls (i.e. AWS, Docker, Slack)
 
-### Getting started with Shared Library
-
-This library consists of `groovy` and `shell` scripts.
-
 ### Example usage:
 
 #### Use library in a pipeline
@@ -42,6 +38,7 @@ stage('Start') {
   steps {
     new SlackNotifier().notifyStart()
   }
+}
 ```
 
 #### Stage to send notification to Squadcast of build result:
@@ -51,6 +48,7 @@ stage('Start') {
   steps {
     squadcastNotifier()
   }
+}
 ```
 
 ### Note:
