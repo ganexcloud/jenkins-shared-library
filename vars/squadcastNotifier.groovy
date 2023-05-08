@@ -13,6 +13,9 @@ def call(String action) {
       additionalArgs = "--priority ${env.PRIORITY}"
     }
   }
+  if (env.SQUADCAST_URL) {
+    env.SQUADCAST_URL= env.SQUADCAST_URL
+  }
   final file = libraryResource('jenkins-squadcast-notifications.py')
   writeFile(file: 'jenkins-squadcast-notifications.py', text: file)
   sh "python3 jenkins-squadcast-notifications.py $additionalArgs"
