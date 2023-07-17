@@ -43,7 +43,7 @@ void notifyResult() {
     return
   }
 
-  def result = status.getCurrentStatus()
+  def result = helper.getCurrentStatus()
   def duration = helper.getDuration()
 
   String changes = null
