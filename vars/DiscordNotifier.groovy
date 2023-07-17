@@ -12,7 +12,7 @@ void notifyStart() {
   def result = "UNSTABLE"
   def url = helper.getAbsoluteUrl()
 
-  sender.send title, message, result, url
+  sender.send title, result, url
 }
 
 
