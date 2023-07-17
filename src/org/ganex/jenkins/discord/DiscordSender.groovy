@@ -9,7 +9,7 @@ void send(String title, String message, String result) {
 
 def getOptions(String title, String message = '', String result = '') {
   def obj = [
-    title: title
+    title: title,
     description: message
   ]
 
