@@ -16,6 +16,7 @@ String formatMessage(String message = '', String testSummary = '') {
   def project = helper.getProjectName()
   def branch = helper.getBranchName()
   def buildNumber = helper.getBuildNumber()
+  def result = ""
   if(message) result = "\n ${message.trim()}"
   if(testSummary) result = "\n ${testSummary}"
 
