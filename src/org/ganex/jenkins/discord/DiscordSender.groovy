@@ -6,7 +6,6 @@ void send(String title, String message, String result, String url) {
   discordSend options
 }
 
-
 def getOptions(String title = '', String message = '', String result = '', String url = '') {
   def obj = [
     description: message,
@@ -15,13 +14,6 @@ def getOptions(String title = '', String message = '', String result = '', Strin
     result: result
   ]
 
-  //obj.title = title
-  //obj.link = url
-//
-  //if (result) {
-  //  obj.result = result
-  //}
-//
   if (env.DISCORD_WEBHOOK_URL) {
     obj.webhookURL = env.discord_WEBHOOK_URL
   }
