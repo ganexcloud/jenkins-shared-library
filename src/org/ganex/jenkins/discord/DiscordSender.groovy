@@ -2,7 +2,7 @@ package org.ganex.jenkins.discord
 
 
 void send(String title, String message, String result, String url) {
-  def options = getOptions message, result
+  def options = getOptions title, message, result, url
   discordSend options
 }
 
