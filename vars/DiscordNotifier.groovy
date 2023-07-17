@@ -8,11 +8,11 @@ void notifyStart() {
 
   def user = helper.getBuildUser()
   def title = formatter.formatTitle "Build started by ${user}..."
-  def message = formatter.formatMessage "Build started by ${user}..."
+  def message = null
   def result = "UNSTABLE"
   def url = helper.getAbsoluteUrl()
 
-  sender.send title, result, url
+  sender.send title, message, result, url
 }
 
 
