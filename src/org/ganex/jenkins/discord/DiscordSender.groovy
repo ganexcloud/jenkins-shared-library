@@ -9,16 +9,19 @@ void send(String title, String message, String result, String url) {
 
 def getOptions(String title = '', String message = '', String result = '', String url = '') {
   def obj = [
-    description: message
+    description: message,
+    title: title,
+    link: url,
+    result: result
   ]
 
-  obj.title = title
-  obj.link = url
-
-  if (result) {
-    obj.result = result
-  }
-
+  //obj.title = title
+  //obj.link = url
+//
+  //if (result) {
+  //  obj.result = result
+  //}
+//
   if (env.DISCORD_WEBHOOK_URL) {
     obj.webhookURL = env.discord_WEBHOOK_URL
   }
