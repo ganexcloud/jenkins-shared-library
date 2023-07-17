@@ -1,6 +1,5 @@
 package org.ganex.jenkins.discord
 
-
 void notifyStart() {
   JenkinsHelper helper = new JenkinsHelper()
   DiscordFormatter formatter = new DiscordFormatter()
@@ -8,10 +7,11 @@ void notifyStart() {
   JenkinsStatus status = new JenkinsStatus()
 
   def user = helper.getBuildUser()
-  def message = formatter.format "Build started by ${user}..."
+  def title = formatter.formatTitle "Build started by ${user}..."
+  def message = formatter.formatMessage "Build started by ${user}..."
   def result = "UNSTABLE"
 
-  sender.send message, result
+  sender.send title, message, result
 }
 
 
@@ -20,8 +20,9 @@ void notifyError(Throwable err) {
   def sender = new DiscordSender()
   def result = currentBuild.currentResult
 
-  def message = formatter.format "An error occurred :interrobang:", err.message
-  sender.send message, result
+  def title = formatter.formatTitle "An error occurred :interrobang:"
+  def message = formatter.formatMessage "An error occurred :interrobang:", err.message
+  sender.send title, message, result
 }
 
 boolean shouldNotNotifySuccess(statusMessage) {
@@ -55,9 +56,10 @@ void notifyResult() {
     testSummary = jenkinsTestsSummary.getTestSummary()
   }
 
-  def message = formatter.format "${statusMessage} after ${duration}", changes, testSummary
+  def title = formatter.formatTitle "${statusMessage} after ${duration}"
+  def message = formatter.formatMessage "${statusMessage} after ${duration}", changes, testSummary
 
-  sender.send message, result
+  sender.send title, message, result
 }
 
 void notifyResultFull() {
