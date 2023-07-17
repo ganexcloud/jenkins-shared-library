@@ -3,8 +3,8 @@ package org.ganex.jenkins.discord
 
 void notifyStart() {
   JenkinsHelper helper = new JenkinsHelper()
-  SlackFormatter formatter = new SlackFormatter()
-  SlackSender sender = new SlackSender()
+  DiscordFormatter formatter = new DiscordFormatter()
+  DiscordSender sender = new DiscordSender()
   JenkinsStatus status = new JenkinsStatus()
 
   def user = helper.getBuildUser()
@@ -16,8 +16,8 @@ void notifyStart() {
 
 
 void notifyError(Throwable err) {
-  def formatter = new SlackFormatter()
-  def sender = new SlackSender()
+  def formatter = new DiscordFormatter()
+  def sender = new DiscordSender()
   def color = new Color().red()
 
   def message = formatter.format "An error occurred :interrobang:", err.message
@@ -32,14 +32,14 @@ boolean shouldNotNotifySuccess(statusMessage) {
 void notifyResult() {
   JenkinsHelper helper = new JenkinsHelper()
   JenkinsStatus status = new JenkinsStatus()
-  SlackFormatter formatter = new SlackFormatter()
-  SlackSender sender = new SlackSender()
+  DiscordFormatter formatter = new DiscordFormatter()
+  DiscordSender sender = new DiscordSender()
   Config config = new Config()
 
   def statusMessage = status.getStatusMessage()
 
   if(shouldNotNotifySuccess(statusMessage)) {
-    println("SlackNotifier - No notification will be send for SUCCESS result")
+    println("DiscordNotifier - No notification will be send for SUCCESS result")
     return
   }
 
