@@ -12,8 +12,8 @@ def getOptions(String title = '', String message = '', String result = '', Strin
     description: message
   ]
 
-  title = title
-  link = url
+  obj.title = title
+  obj.link = url
 
   if (result) {
     obj.result = result

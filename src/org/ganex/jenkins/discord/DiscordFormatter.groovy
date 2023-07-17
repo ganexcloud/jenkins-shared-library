@@ -12,7 +12,7 @@ String formatTitle(String title = '') {
   return result
 }
 
-String formatMessage(String title = '', String message = '', String testSummary = '') {
+String formatMessage(String message = '', String testSummary = '') {
   def helper = new JenkinsHelper()
 
   def project = helper.getProjectName()
@@ -20,7 +20,6 @@ String formatMessage(String title = '', String message = '', String testSummary 
   def buildNumber = helper.getBuildNumber()
   def url = helper.getAbsoluteUrl()
 
-  def result = "${project} (#${buildNumber}) - ${title.trim()}"
   if(message) result = "\n ${message.trim()}"
   if(testSummary) result = "\n ${testSummary}"
 
