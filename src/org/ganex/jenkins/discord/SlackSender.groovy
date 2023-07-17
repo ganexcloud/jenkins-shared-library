@@ -17,7 +17,7 @@ def getOptions(String message = '', String color = '') {
     obj.color = color
   }
 
-  if (env.discord_WEBHOOK_URL) {
+  if (env.DISCORD_WEBHOOK_URL) {
     obj.webhookURL = env.discord_WEBHOOK_URL
   }
 
