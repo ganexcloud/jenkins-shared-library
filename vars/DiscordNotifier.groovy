@@ -9,19 +9,19 @@ void notifyStart() {
 
   def user = helper.getBuildUser()
   def message = formatter.format "Build started by ${user}..."
-  def color = new Color().blue()
+  def result = "UNSTABLE"
 
-  sender.send message, color
+  sender.send message, result
 }
 
 
 void notifyError(Throwable err) {
   def formatter = new DiscordFormatter()
   def sender = new DiscordSender()
-  def color = new Color().red()
+  def result = currentBuild.currentResult
 
   def message = formatter.format "An error occurred :interrobang:", err.message
-  sender.send message, color
+  sender.send message, result
 }
 
 boolean shouldNotNotifySuccess(statusMessage) {
@@ -43,7 +43,7 @@ void notifyResult() {
     return
   }
 
-  def color = status.getStatusColor()
+  def result = status.getCurrentStatus()
   def duration = helper.getDuration()
 
   String changes = null
@@ -57,7 +57,7 @@ void notifyResult() {
 
   def message = formatter.format "${statusMessage} after ${duration}", changes, testSummary
 
-  sender.send message, color
+  sender.send message, result
 }
 
 void notifyResultFull() {

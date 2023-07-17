@@ -61,21 +61,21 @@ String getStatusMessage() {
   return ''
 }
 
-String getStatusColor() {
-  def result = currentBuild.currentResult
-  def colors = new Color()
-
-  if (result == 'SUCCESS') {
+//String getStatusColor() {
+//  def result = currentBuild.currentResult
+//  def colors = new Color()
+//
+//  if (result == 'SUCCESS') {
     return colors.green()
-  }
-
-  if (result == 'FAILURE') {
+//  }
+//
+//  if (result == 'FAILURE') {
     return colors.red()
-  }
-
-  if (result == 'ABORTED') {
+//  }
+//
+//  if (result == 'ABORTED') {
     return colors.gray()
-  }
-
-  return colors.yellow()
-}
+//  }
+//
+//  return colors.yellow()
+//}
