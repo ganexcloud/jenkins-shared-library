@@ -10,8 +10,9 @@ void notifyStart() {
   def title = formatter.formatTitle "Build started by ${user}..."
   def message = formatter.formatMessage "Build started by ${user}..."
   def result = "UNSTABLE"
+  def url = helper.getAbsoluteUrl()
 
-  sender.send title, message, result
+  sender.send title, message, result, url
 }
 
 
@@ -22,7 +23,9 @@ void notifyError(Throwable err) {
 
   def title = formatter.formatTitle "An error occurred :interrobang:"
   def message = formatter.formatMessage "An error occurred :interrobang:", err.message
-  sender.send title, message, result
+  def url = helper.getAbsoluteUrl()
+
+  sender.send title, message, result, url
 }
 
 boolean shouldNotNotifySuccess(statusMessage) {
@@ -58,8 +61,9 @@ void notifyResult() {
 
   def title = formatter.formatTitle "${statusMessage} after ${duration}"
   def message = formatter.formatMessage "${statusMessage} after ${duration}", changes, testSummary
+  def url = helper.getAbsoluteUrl()
 
-  sender.send title, message, result
+  sender.send title, message, result, url
 }
 
 void notifyResultFull() {

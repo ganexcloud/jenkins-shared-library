@@ -1,17 +1,19 @@
 package org.ganex.jenkins.discord
 
 
-void send(String title, String message, String result) {
+void send(String title, String message, String result, String url) {
   def options = getOptions message, result
   discordSend options
 }
 
 
-def getOptions(String title, String message = '', String result = '') {
+def getOptions(String title = '', String message = '', String result = '', String url = '') {
   def obj = [
-    title: title,
     description: message
   ]
+
+  title = title
+  link = url
 
   if (result) {
     obj.result = result

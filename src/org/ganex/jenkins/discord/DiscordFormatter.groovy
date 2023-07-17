@@ -6,9 +6,8 @@ String formatTitle(String title = '') {
   def project = helper.getProjectName()
   def branch = helper.getBranchName()
   def buildNumber = helper.getBuildNumber()
-  def url = helper.getAbsoluteUrl()
 
-  def result = "${project} (#${buildNumber}) - ${title.trim()} (<${url}>)"
+  def result = "${project} (#${buildNumber}) - ${title.trim()}"
 
   return result
 }
@@ -20,8 +19,8 @@ String formatMessage(String title = '', String message = '', String testSummary 
   def branch = helper.getBranchName()
   def buildNumber = helper.getBuildNumber()
   def url = helper.getAbsoluteUrl()
-  
-  def result = "${project} (#${buildNumber}) - ${title.trim()} (<${url}>)"
+
+  def result = "${project} (#${buildNumber}) - ${title.trim()}"
   if(message) result = "\n ${message.trim()}"
   if(testSummary) result = "\n ${testSummary}"
 
