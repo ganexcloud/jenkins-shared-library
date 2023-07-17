@@ -20,7 +20,8 @@ String formatMessage(String title = '', String message = '', String testSummary 
   def branch = helper.getBranchName()
   def buildNumber = helper.getBuildNumber()
   def url = helper.getAbsoluteUrl()
-
+  
+  def result = "${project} (#${buildNumber}) - ${title.trim()} (<${url}>)"
   if(message) result = "\n ${message.trim()}"
   if(testSummary) result = "\n ${testSummary}"
 

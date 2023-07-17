@@ -13,11 +13,6 @@ def getOptions(String title, String message = '', String result = '') {
     description: message
   ]
 
-  
-  //if (result) {
-  //  obj.result = currentBuild.currentResult
-  //}
-
   if (result) {
     obj.result = result
   }
