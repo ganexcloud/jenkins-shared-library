@@ -61,36 +61,15 @@ void notifyResult() {
     testSummary = jenkinsTestsSummary.getTestSummary()
   }
 
-  //def title = formatter.formatTitle "${statusMessage} after ${duration}"
   def message = formatter.formatMessage "${statusMessage} after ${duration}", changes, testSummary
   def url = helper.getAbsoluteUrl()
-  def url2 = "${env.TEAMS_WEBHOOK_URL}"
+  def webook_url = "${env.TEAMS_WEBHOOK_URL}"
   
   println "message: ${message}"
-  //def comandoCurl = "curl -vvvv -X POST -H 'Content-Type: application/json' -d '{\"chave\": \"asdasd\"}' ${url2}"
-  //def comandoCurl = "curl -vvvv -X GET ${url2}"
-  def comandoCurl = ["curl", "-X", "POST", "-H", "Content-Type: application/json", "-d", message, url2]
+  def comandoCurl = ["curl", "-X", "POST", "-H", "Content-Type: application/json", "-d", message, webook_url]
   println "Comando curl: ${comandoCurl}"
-  // Execute o comando
-  //def resultadoComando = comandoCurl.execute()
   def resultadoComando = comandoCurl.execute().text
-  //def resultadoComando = processo.text
-  //def resultadoComando2 = processo.err.text
-  //def statusCurl = processo.waitFor()
-  //println resultadoComando
-  //println resultadoComando2
-  //if (statusCurl == 0) {
-  //    println "Comando curl concluído com sucesso. Resultado: ${resultadoComando}"
-  //
-  //    // Prossiga com o restante do seu script aqui
-  //} else {
-  //    println "Erro ao executar o comando curl. Status de saída: ${statusCurl}"
-  //}
   println "Resultado do Comando: ${resultadoComando}"
-
-
-  //sender.send title, message, result, url
-  //sh "curl -X POST -H 'Content-Type: application/json' -d '{\"text\": \"${message}\"}' ${env.TEAMS_WEBHOOK_URL}"
 }
 
 void notifyResultFull() {
