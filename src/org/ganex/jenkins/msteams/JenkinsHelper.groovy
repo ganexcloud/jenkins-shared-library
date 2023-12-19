@@ -52,7 +52,7 @@ List<String> getChanges() {
               {
                "name": "Commit",
                "value": "${entry.commitId}"
-              }
+              },
       """
       messages.add(jsonEntry)
     }
