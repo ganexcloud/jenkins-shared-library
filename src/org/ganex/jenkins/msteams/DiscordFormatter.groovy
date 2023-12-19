@@ -19,44 +19,40 @@ String formatMessage(String message = '', String testSummary = '') {
   def result = ""
   if(message) result = "\n ${message.trim()}"
   if(testSummary) result = "\n ${testSummary}"
-  def criarTemplateJson(nome, idade, cidade) {
-      def templateJson = '''
+  def templateJson = '''
+    {
+      "type": "message",
+      "attachments": [
         {
-          "type": "message",
-          "attachments": [
-            {
-              "contentType": "application/vnd.microsoft.card.adaptive",
-              "contentUrl": null,
-              "content": {
-                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-                "type": "AdaptiveCard",
-                "version": "1.2",
-                "body": [
-                  {
-                    "type": "TextBlock",
-                    "text": "Author: caio"
-                  },
-                  {
-                    "type": "TextBlock",
-                    "text": "Message: asd"
-                  },
-                  {
-                    "type": "TextBlock",
-                    "text": "Branch: staging"
-                  },
-                  {
-                    "type": "TextBlock",
-                    "text": "Commit: 8cc55630b838b6356091e48f8da362a41ff95518"
-                  }
-                ]
+          "contentType": "application/vnd.microsoft.card.adaptive",
+          "contentUrl": null,
+          "content": {
+            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+            "type": "AdaptiveCard",
+            "version": "1.2",
+            "body": [
+              {
+                "type": "TextBlock",
+                "text": "Author: caio"
+              },
+              {
+                "type": "TextBlock",
+                "text": "Message: asd"
+              },
+              {
+                "type": "TextBlock",
+                "text": "Branch: staging"
+              },
+              {
+                "type": "TextBlock",
+                "text": "Commit: 8cc55630b838b6356091e48f8da362a41ff95518"
               }
-            }
-          ]
+            ]
+          }
         }
-
-      '''
-      return JsonOutput.prettyPrint(templateJson)
-  }
-  def jsonFinal = criarTemplateJson
+      ]
+    }
+  '''
+  def jsonFinal = templateJson
   return jsonFinal
 }
