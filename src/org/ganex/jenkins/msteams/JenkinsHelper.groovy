@@ -37,22 +37,22 @@ List<String> getChanges() {
       def entry = entries[j]
       def branch = getBranchName()
       def jsonEntry = """
-          {
-            "type": "TextBlock",
-            "text": "Author: ${entry.author}"
-          },
-          {
-            "type": "TextBlock",
-            "text": "Message: ${entry.msg}"
-          },
-          {
-            "type": "TextBlock",
-            "text": "Branch: ${branch}"
-          },
-          {
-           "type": "TextBlock",
-           "text": "Commit: ${entry.commitId}"
-          }
+              {
+                "type": "TextBlock",
+                "text": "Author: ${entry.author}"
+              },
+              {
+                "type": "TextBlock",
+                "text": "Message: ${entry.msg}"
+              },
+              {
+                "type": "TextBlock",
+                "text": "Branch: ${branch}"
+              },
+              {
+               "type": "TextBlock",
+               "text": "Commit: ${entry.commitId}"
+              }
       """
       
       messages.add(jsonEntry)
