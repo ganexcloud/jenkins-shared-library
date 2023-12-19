@@ -16,7 +16,7 @@ String formatMessage(String title = '', String testSummary = '', String message 
   def project = helper.getProjectName()
   def branch = helper.getBranchName()
   def buildNumber = helper.getBuildNumber()
-  def title = "${project} (#${buildNumber}) - ${title.trim()}"
+  def titleFormated = "${project} (#${buildNumber}) - ${title.trim()}"
   def result = ""
   if(message) result = "\n ${message.trim()}"
   if(testSummary) result = "\n ${testSummary}"
@@ -25,10 +25,10 @@ String formatMessage(String title = '', String testSummary = '', String message 
       "@type": "MessageCard",
       "@context": "http://schema.org/extensions",
       "themeColor": "0076D7",
-      "summary": "${title}",
+      "summary": "${titleFormated}",
       "sections": [
         {
-          "activityTitle": "${title}",
+          "activityTitle": "${titleFormated}",
           "facts": [
             ${message}
           ],
