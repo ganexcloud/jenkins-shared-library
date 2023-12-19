@@ -31,22 +31,7 @@ String formatMessage(String message = '', String testSummary = '') {
             "type": "AdaptiveCard",
             "version": "1.2",
             "body": [
-              {
-                "type": "TextBlock",
-                "text": "Author: caio"
-              },
-              {
-                "type": "TextBlock",
-                "text": "Message: asd"
-              },
-              {
-                "type": "TextBlock",
-                "text": "Branch: staging"
-              },
-              {
-                "type": "TextBlock",
-                "text": "Commit: 8cc55630b838b6356091e48f8da362a41ff95518"
-              }
+              ${message}
             ]
           }
         }
