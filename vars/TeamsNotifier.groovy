@@ -64,9 +64,17 @@ void notifyResult() {
   def title = formatter.formatTitle "${statusMessage} after ${duration}"
   def message = formatter.formatMessage changes, testSummary
   def url = helper.getAbsoluteUrl()
+  def url2 = "${env.TEAMS_WEBHOOK_URL}"
+
+  def comandoCurl = "curl -X POST -H 'Content-Type: application/json' -d '{\"text\": \"${message}\"}' ${url2}}"
+  
+  // Execute o comando
+  def resultadoComando = comandoCurl.execute().text
+  println "Resultado do Comando: ${resultadoComando}"
+
 
   //sender.send title, message, result, url
-  sh "curl -X POST -H 'Content-Type: application/json' -d '{\"text\": \"${message}\"}' ${env.TEAMS_WEBHOOK_URL}"
+  //sh "curl -X POST -H 'Content-Type: application/json' -d '{\"text\": \"${message}\"}' ${env.TEAMS_WEBHOOK_URL}"
 }
 
 void notifyResultFull() {
