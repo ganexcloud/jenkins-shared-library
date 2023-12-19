@@ -2,6 +2,7 @@ package org.ganex.jenkins.msteams
 
 String formatMessage(String title = '', String message = '', String testSummary = '') {
   def helper = new JenkinsHelper()
+  def status = new JenkinsStatus()
   def project = helper.getProjectName()
   def branch = helper.getBranchName()
   def buildNumber = helper.getBuildNumber()
