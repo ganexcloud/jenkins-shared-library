@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-package org.ganex.jenkins.discord
+package org.ganex.jenkins.msteams
 
 void notifyStart() {
   JenkinsHelper helper = new JenkinsHelper()
