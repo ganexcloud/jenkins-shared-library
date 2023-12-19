@@ -70,7 +70,7 @@ void notifyResult() {
   def comandoCurl = "curl -X POST -H 'Content-Type: application/json' -d '{\"chave\": \"asdasd\"}' ${url2}"
   println "Comando curl: ${comandoCurl}"
   // Execute o comando
-  def resultadoComando = comandoCurl.execute().text
+  def resultadoComando = comandoCurl.execute()
   println "Resultado do Comando: ${resultadoComando}"
 
 
