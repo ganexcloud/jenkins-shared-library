@@ -19,7 +19,7 @@ String formatMessage(String message = '', String testSummary = '') {
   def result = ""
   if(message) result = "\n ${message.trim()}"
   if(testSummary) result = "\n ${testSummary}"
-  def templateJson = '''
+  def templateJson = """
     {
       "type": "message",
       "attachments": [
@@ -37,7 +37,7 @@ String formatMessage(String message = '', String testSummary = '') {
         }
       ]
     }
-  '''
+  """
   def jsonFinal = templateJson
   return jsonFinal
 }
