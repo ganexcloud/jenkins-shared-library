@@ -70,10 +70,16 @@ void notifyResult() {
   def comandoCurl = "curl -X POST -H 'Content-Type: application/json' -d '{\"chave\": \"asdasd\"}' ${url2}"
   println "Comando curl: ${comandoCurl}"
   // Execute o comando
-  def resultadoComando = comandoCurl.execute().text
-  resultadoComando.waitFor()
-  println resultadoComando.err.text
-  println resultadoComando.text
+  def resultadoComando = comandoCurl.execute()
+  def resultadoComando = processo.text
+  def status = processo.waitFor()
+  if (status == 0) {
+      println "Comando curl concluído com sucesso. Resultado: ${resultadoComando}"
+  
+      // Prossiga com o restante do seu script aqui
+  } else {
+      println "Erro ao executar o comando curl. Status de saída: ${status}"
+  }
   println "Resultado do Comando: ${resultadoComando}"
 
 
