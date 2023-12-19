@@ -1,7 +1,7 @@
 #!/usr/bin/env groovy
 
 package org.ganex.jenkins.discord
-import groovyx.net.http.RESTClient  
+//import groovyx.net.http.RESTClient  
 
 void notifyStart() {
   JenkinsHelper helper = new JenkinsHelper()
@@ -66,11 +66,11 @@ void notifyResult() {
   def message = formatter.formatMessage changes, testSummary
   def url = helper.getAbsoluteUrl()
 
-  def url = "${env.TEAMS_WEBHOOK_URL}"
+  def url2 = "${env.TEAMS_WEBHOOK_URL}"
   def data = [
       text: message,
   ]  
-  def client = new RESTClient(url)  
+  def client = new RESTClient(url2)  
   def response = client.post(
       contentType: 'application/json',
       body: data
