@@ -71,6 +71,9 @@ void notifyResult() {
   println "Comando curl: ${comandoCurl}"
   // Execute o comando
   def resultadoComando = comandoCurl.execute()
+  resultadoComando.waitFor()
+  println resultadoComando.err.text
+  println resultadoComando.text
   println "Resultado do Comando: ${resultadoComando}"
 
 
