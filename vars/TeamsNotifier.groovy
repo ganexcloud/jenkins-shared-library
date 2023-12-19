@@ -74,6 +74,8 @@ void notifyResult() {
   def processo = comandoCurl.execute()
   def resultadoComando = processo.text
   def statusCurl = processo.waitFor()
+  println statusCurl.err.text
+  println statusCurl.text
   if (statusCurl == 0) {
       println "Comando curl concluído com sucesso. Resultado: ${resultadoComando}"
   
