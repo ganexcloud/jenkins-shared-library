@@ -2,11 +2,11 @@ package org.ganex.jenkins.msteams
 
 
 String red() {
-  return 'ff4500'
+  return '#ff4500'
 }
 
 String green() {
-  return '6aa84f'
+  return '#6aa84f'
 }
 
 String yellow() {
