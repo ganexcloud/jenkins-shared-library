@@ -1,4 +1,4 @@
-package org.ganex.jenkins.slack
+package org.ganex.jenkins.msteams
 
 
 String red() {

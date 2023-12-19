@@ -4,8 +4,8 @@ package org.ganex.jenkins.msteams
 
 void notifyStart() {
   JenkinsHelper helper = new JenkinsHelper()
-  DiscordFormatter formatter = new DiscordFormatter()
-  DiscordSender sender = new DiscordSender()
+  MSTeamsFormatter formatter = new MSTeamsFormatter()
+  MSTeamsSender sender = new MSTeamsSender()
   JenkinsStatus status = new JenkinsStatus()
 
   def user = helper.getBuildUser()
@@ -19,8 +19,8 @@ void notifyStart() {
 
 
 void notifyError(Throwable err) {
-  def formatter = new DiscordFormatter()
-  def sender = new DiscordSender()
+  def formatter = new MSTeamsFormatter()
+  def sender = new MSTeamsSender()
   def result = currentBuild.currentResult
 
   def title = formatter.formatTitle "An error occurred :interrobang:"
@@ -38,8 +38,8 @@ boolean shouldNotNotifySuccess(statusMessage) {
 void notifyResult() {
   JenkinsHelper helper = new JenkinsHelper()
   JenkinsStatus status = new JenkinsStatus()
-  DiscordFormatter formatter = new DiscordFormatter()
-  DiscordSender sender = new DiscordSender()
+  MSTeamsFormatter formatter = new MSTeamsFormatter()
+  MSTeamsSender sender = new MSTeamsSender()
   Config config = new Config()
 
   def statusMessage = status.getStatusMessage()
