@@ -1,4 +1,4 @@
-package org.ganex.jenkins.discord
+package org.ganex.jenkins.msteams
 
 
 Boolean getNotifySuccess() {
