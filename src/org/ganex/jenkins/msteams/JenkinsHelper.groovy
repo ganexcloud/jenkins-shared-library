@@ -36,7 +36,29 @@ List<String> getChanges() {
     for (int j = 0; j < entries.length; j++) {
       def entry = entries[j]
       def branch = getBranchName()
-      messages.add('\t"type": "TextBlock", "text": "Author: ${entry.author}"\n"type": "TextBlock", "text": "Message: ${entry.msg}\n"type": "TextBlock", "text": "Branch: ${branch}"\n"type": "TextBlock", "text": "Commit: ${entry.commitId}"')
+      def jsonEntry = """
+          {
+            "type": "TextBlock",
+            "text": "Author: ${entry.author}"
+          },
+          {
+            "type": "TextBlock",
+            "text": "Message: ${entry.msg}"
+          },
+          {
+            "type": "TextBlock",
+            "text": "Branch: ${branch}"
+          },
+          {
+           "type": "TextBlock",
+           "text": "Commit: ${entry.commitId}"
+          }
+      """
+      
+      messages.add(jsonEntry)
+
+
+      //messages.add('\t{\n"type": "TextBlock",\n"text": "Author: ${entry.author}"\n"type": "TextBlock", "text": "Message: ${entry.msg}\n"type": "TextBlock", "text": "Branch: ${branch}"\n"type": "TextBlock", "text": "Commit: ${entry.commitId}"')
     }
   }
 
