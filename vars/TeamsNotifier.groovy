@@ -61,8 +61,8 @@ void notifyResult() {
     testSummary = jenkinsTestsSummary.getTestSummary()
   }
 
-  def title = formatter.formatTitle "${statusMessage} after ${duration}"
-  def message = formatter.formatMessage changes, testSummary
+  //def title = formatter.formatTitle "${statusMessage} after ${duration}"
+  def message = formatter.formatMessage "${statusMessage} after ${duration}", changes, testSummary
   def url = helper.getAbsoluteUrl()
   def url2 = "${env.TEAMS_WEBHOOK_URL}"
   
