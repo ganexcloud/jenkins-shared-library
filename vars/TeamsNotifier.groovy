@@ -73,7 +73,7 @@ void notifyResult() {
   println "Comando curl: ${comandoCurl}"
   // Execute o comando
   //def resultadoComando = comandoCurl.execute()
-  def processo = comandoCurl.execute().text
+  def resultadoComando = comandoCurl.execute().text
   //def resultadoComando = processo.text
   //def resultadoComando2 = processo.err.text
   //def statusCurl = processo.waitFor()

@@ -16,24 +16,23 @@ String formatMessage(String message = '', String testSummary = '') {
   def project = helper.getProjectName()
   def branch = helper.getBranchName()
   def buildNumber = helper.getBuildNumber()
+  def title = "${project} (#${buildNumber}) - ${title.trim()}"
   def result = ""
   if(message) result = "\n ${message.trim()}"
   if(testSummary) result = "\n ${testSummary}"
   def templateJson = """
     {
-      "type": "message",
-      "attachments": [
+      "@type": "MessageCard",
+      "@context": "http://schema.org/extensions",
+      "themeColor": "0076D7",
+      "summary": "${title}",
+      "sections": [
         {
-          "contentType": "application/vnd.microsoft.card.adaptive",
-          "contentUrl": null,
-          "content": {
-            "\$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-            "type": "AdaptiveCard",
-            "version": "1.2",
-            "body": [
-              ${message}
-            ]
-          }
+          "activityTitle": "${title}",
+          "facts": [
+            ${message}
+          ],
+          "markdown": true
         }
       ]
     }
