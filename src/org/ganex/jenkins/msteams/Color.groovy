@@ -2,19 +2,19 @@ package org.ganex.jenkins.msteams
 
 
 String red() {
-  return 'danger'
+  return 'ff4500'
 }
 
 String green() {
-  return 'good'
+  return '6aa84f'
 }
 
 String yellow() {
-  return '#DAA038'
+  return '#ffd966'
 }
 
 String blue() {
-  return '#1f78c1'
+  return '#3d85c6'
 }
 
 String gray() {
