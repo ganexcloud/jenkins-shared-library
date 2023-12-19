@@ -69,7 +69,7 @@ void notifyResult() {
   println "message: ${message}"
   //def comandoCurl = "curl -vvvv -X POST -H 'Content-Type: application/json' -d '{\"chave\": \"asdasd\"}' ${url2}"
   //def comandoCurl = "curl -vvvv -X GET ${url2}"
-  def comandoCurl = ["curl", "-X", "POST", "-H", "Content-Type: application/json", "-d", $message, url2]
+  def comandoCurl = ["curl", "-X", "POST", "-H", "Content-Type: application/json", "-d", message, url2]
   println "Comando curl: ${comandoCurl}"
   // Execute o comando
   //def resultadoComando = comandoCurl.execute()
