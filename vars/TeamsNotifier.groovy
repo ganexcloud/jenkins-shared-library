@@ -67,7 +67,7 @@ void notifyResult() {
   def url2 = "${env.TEAMS_WEBHOOK_URL}"
 
   def comandoCurl = "curl -X POST -H 'Content-Type: application/json' -d '{\"text\": \"${message}\"}' ${url2}}"
-  
+  println "Comando curl: ${comandoCurl}"
   // Execute o comando
   def resultadoComando = comandoCurl.execute().text
   println "Resultado do Comando: ${resultadoComando}"
