@@ -9,14 +9,9 @@ void notifyStart() {
   JenkinsStatus status = new JenkinsStatus()
 
   def user = helper.getBuildUser()
-  //def title = formatter.formatTitle "Build started by ${user}..."
-  //def message = null
   def result = "UNSTABLE"
-  //def url = helper.getAbsoluteUrl()
-  
-  def message = formatter.formatMessage "Build started by ${user}..."
+  def message = formatter.formatMessageSimple "Build started by ${user}..."
   def webook_url = "${env.TEAMS_WEBHOOK_URL}"
-  
   println "message: ${message}"
   def comandoCurl = ["curl", "-X", "POST", "-H", "Content-Type: application/json", "-d", message, webook_url]
   println "Comando curl: ${comandoCurl}"
