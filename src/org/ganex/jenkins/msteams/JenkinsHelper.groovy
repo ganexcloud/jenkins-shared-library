@@ -37,6 +37,7 @@ List<String> getChanges() {
       def entry = entries[j]
       def branch = getBranchName()
       def jsonEntry = """
+            {
               "facts": [
                 {
                   "name": "Author",
@@ -56,6 +57,7 @@ List<String> getChanges() {
                 },
               ],
               "markdown": true
+            },
       """
       messages.add(jsonEntry)
     }

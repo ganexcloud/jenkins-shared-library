@@ -56,9 +56,7 @@ String formatMessage(String title = '', String message = '', String testSummary 
       "title": "${titleFormated}",
       "text": "**Commits:**",
       "sections": [
-        {
-          ${message}
-        }
+        ${message}
       ],
       "potentialAction": [
         {
