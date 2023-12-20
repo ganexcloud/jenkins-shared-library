@@ -14,7 +14,7 @@ void notifyStart() {
   def result = "UNSTABLE"
   //def url = helper.getAbsoluteUrl()
   
-  def message = formatter.formatMessage "Build started by ${user}...", changes, testSummary
+  def message = formatter.formatMessage "Build started by ${user}..."
   def webook_url = "${env.TEAMS_WEBHOOK_URL}"
   
   println "message: ${message}"
