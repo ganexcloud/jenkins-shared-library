@@ -9,26 +9,34 @@ void notifyStart() {
   JenkinsStatus status = new JenkinsStatus()
 
   def user = helper.getBuildUser()
-  def title = formatter.formatTitle "Build started by ${user}..."
-  def message = null
+  //def title = formatter.formatTitle "Build started by ${user}..."
+  //def message = null
   def result = "UNSTABLE"
-  def url = helper.getAbsoluteUrl()
-
-  sender.send title, message, result, url
+  //def url = helper.getAbsoluteUrl()
+  
+  def message = formatter.formatMessage "Build started by ${user}...", changes, testSummary
+  def webook_url = "${env.TEAMS_WEBHOOK_URL}"
+  
+  println "message: ${message}"
+  def comandoCurl = ["curl", "-X", "POST", "-H", "Content-Type: application/json", "-d", message, webook_url]
+  println "Comando curl: ${comandoCurl}"
+  def resultadoComando = comandoCurl.execute().text
+  println "Resultado do Comando: ${resultadoComando}"
+  //sender.send title, message, result, url
 }
 
 
-void notifyError(Throwable err) {
-  def formatter = new MSTeamsFormatter()
-  def sender = new MSTeamsSender()
-  def result = currentBuild.currentResult
-
-  def title = formatter.formatTitle "An error occurred :interrobang:"
-  def message = formatter.formatMessage err.message
-  def url = helper.getAbsoluteUrl()
-
-  sender.send title, message, result, url
-}
+//void notifyError(Throwable err) {
+//  def formatter = new MSTeamsFormatter()
+//  def sender = new MSTeamsSender()
+//  def result = currentBuild.currentResult
+//
+//  def title = formatter.formatTitle "An error occurred :interrobang:"
+//  def message = formatter.formatMessage err.message
+//  def url = helper.getAbsoluteUrl()
+//
+//  sender.send title, message, result, url
+//}
 
 boolean shouldNotNotifySuccess(statusMessage) {
   Config config = new Config()
@@ -43,18 +51,14 @@ void notifyResult() {
   Config config = new Config()
 
   def statusMessage = status.getStatusMessage()
-
   if(shouldNotNotifySuccess(statusMessage)) {
     println("DiscordNotifier - No notification will be send for SUCCESS result")
     return
   }
-
   def result = helper.getCurrentStatus()
   def duration = helper.getDuration()
-
   String changes = null
   if(config.getChangeList()) changes = helper.getChanges().join '\n'
-
   String testSummary = null
   if (config.getTestSummary()) {
     JenkinsTestsSummary jenkinsTestsSummary = new JenkinsTestsSummary()
@@ -62,14 +66,13 @@ void notifyResult() {
   }
 
   def message = formatter.formatMessage "${statusMessage} after ${duration}", changes, testSummary
-  def url = helper.getAbsoluteUrl()
   def webook_url = "${env.TEAMS_WEBHOOK_URL}"
   
-  println "message: ${message}"
+  //println "message: ${message}"
   def comandoCurl = ["curl", "-X", "POST", "-H", "Content-Type: application/json", "-d", message, webook_url]
-  println "Comando curl: ${comandoCurl}"
+  //println "Comando curl: ${comandoCurl}"
   def resultadoComando = comandoCurl.execute().text
-  println "Resultado do Comando: ${resultadoComando}"
+  //println "Resultado do Comando: ${resultadoComando}"
 }
 
 void notifyResultFull() {

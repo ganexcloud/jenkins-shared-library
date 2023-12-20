@@ -8,6 +8,7 @@ String formatMessage(String title = '', String message = '', String testSummary 
   def buildNumber = helper.getBuildNumber()
   def titleFormated = "${project} (#${buildNumber}) - ${title.trim()}"
   def color = status.getStatusColor()
+  def url = helper.getAbsoluteUrl()
   def result = ""
   if(message) result = "\n ${message.trim()}"
   if(testSummary) result = "\n ${testSummary}"
@@ -17,13 +18,23 @@ String formatMessage(String title = '', String message = '', String testSummary 
       "@context": "http://schema.org/extensions",
       "themeColor": "${color}",
       "summary": "${titleFormated}",
+      "title": "${titleFormated}",
+      "text": "**Commits:**",
       "sections": [
         {
-          "activityTitle": "${titleFormated}",
-          "facts": [
-            ${message}
-          ],
-          "markdown": true
+          ${message}
+        }
+      ],
+      "potentialAction": [
+        {
+          "@type": "OpenUri",
+          "name": "View Job",
+          "targets": [
+            {
+              "os": "default",
+              "uri": "${url}"
+            }
+          ]
         }
       ]
     }
