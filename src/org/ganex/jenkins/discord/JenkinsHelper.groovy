@@ -36,7 +36,7 @@ List<String> getChanges() {
     for (int j = 0; j < entries.length; j++) {
       def entry = entries[j]
       def branch = getBranchName()
-      messages.add("\tAuthor: ${entry.author}\nMessage: ${entry.msg}\nBranch: ${branch}\nCommit: ${entry.commitId}\n\n")
+      messages.add("\tAuthor: ${entry.author}\nMessage: ${entry.msg}\nBranch: ${branch}\nCommit: ${entry.commitId}\n")
     }
   }
 
