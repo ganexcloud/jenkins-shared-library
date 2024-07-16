@@ -12,26 +12,17 @@ String formatMessageSimple(String title = '') {
   def url = helper.getAbsoluteUrl()
   def templateJson = """
     {
-      "#type": "message",
+      "@type": "message",
       "attachments": [
         {
           "contentType": "application/vnd.microsoft.card.adaptive",
           "content": {
-            "#type": "AdaptiveCard",
+            "@type": "AdaptiveCard",
             "\$schema":"http://adaptivecards.io/schemas/adaptive-card.json",
             "version": "1.4",
             "msteams": {  
               "width": "Full"  
-            },  
-            "body": [
-              {
-                "#type": "Container",
-                "style": "${color}",
-                "items": [
-                  ${message}
-                ]
-              }
-            ],
+            },
           },
         },
       ],
