@@ -12,25 +12,52 @@ String formatMessageSimple(String title = '') {
   def url = helper.getAbsoluteUrl()
   def templateJson = """
     {
-      "@type": "MessageCard",
-      "@context": "http://schema.org/extensions",
-      "themeColor": "${color}",
-      "summary": "${titleFormated}",
-      "title": "${titleFormated}",
-      "potentialAction": [
+      "type": "message",
+      "attachments": [
         {
-          "@type": "OpenUri",
-          "name": "View Job",
-          "targets": [
-            {
-              "os": "default",
-              "uri": "${url}"
-            }
-          ]
-        }
-      ]
+          "contentType": "application/vnd.microsoft.card.adaptive",
+          "content": {
+            "type": "AdaptiveCard",
+            "\$schema":"http://adaptivecards.io/schemas/adaptive-card.json",
+            "version": "1.4",
+            "msteams": {  
+              "width": "Full"  
+            },  
+            "body": [
+              {
+                "type": "Container",
+                "style": "${color}",
+                "items": [
+                  ${message}
+                ]
+              }
+            ],
+          },
+        },
+      ],
     }
   """
+  //def templateJson = """
+  //  {
+  //    "@type": "MessageCard",
+  //    "@context": "http://schema.org/extensions",
+  //    "themeColor": "${color}",
+  //    "summary": "${titleFormated}",
+  //    "title": "${titleFormated}",
+  //    "potentialAction": [
+  //      {
+  //        "@type": "OpenUri",
+  //        "name": "View Job",
+  //        "targets": [
+  //          {
+  //            "os": "default",
+  //            "uri": "${url}"
+  //          }
+  //        ]
+  //      }
+  //    ]
+  //  }
+  //"""
   def jsonFinal = templateJson
   return jsonFinal
 }
@@ -49,29 +76,56 @@ String formatMessage(String title = '', String message = '', String testSummary 
   if(testSummary) result = "\n ${testSummary}"
   def templateJson = """
     {
-      "@type": "MessageCard",
-      "@context": "http://schema.org/extensions",
-      "themeColor": "${color}",
-      "summary": "${titleFormated}",
-      "title": "${titleFormated}",
-      "text": "**Commits:**",
-      "sections": [
-        ${message}
-      ],
-      "potentialAction": [
+      "type": "message",
+      "attachments": [
         {
-          "@type": "OpenUri",
-          "name": "View Job",
-          "targets": [
-            {
-              "os": "default",
-              "uri": "${url}"
-            }
-          ]
-        }
-      ]
+          "contentType": "application/vnd.microsoft.card.adaptive",
+          "content": {
+            "type": "AdaptiveCard",
+            "\$schema":"http://adaptivecards.io/schemas/adaptive-card.json",
+            "version": "1.4",
+            "msteams": {  
+              "width": "Full"  
+            },  
+            "body": [
+              {
+                "type": "Container",
+                "style": "${color}",
+                "items": [
+                  ${message}
+                ]
+              }
+            ],
+          },
+        },
+      ],
     }
   """
+  //def templateJson = """
+  //  {
+  //    "@type": "MessageCard",
+  //    "@context": "http://schema.org/extensions",
+  //    "themeColor": "${color}",
+  //    "summary": "${titleFormated}",
+  //    "title": "${titleFormated}",
+  //    "text": "**Commits:**",
+  //    "sections": [
+  //      ${message}
+  //    ],
+  //    "potentialAction": [
+  //      {
+  //        "@type": "OpenUri",
+  //        "name": "View Job",
+  //        "targets": [
+  //          {
+  //            "os": "default",
+  //            "uri": "${url}"
+  //          }
+  //        ]
+  //      }
+  //    ]
+  //  }
+  //"""
   def jsonFinal = templateJson
   return jsonFinal
 }

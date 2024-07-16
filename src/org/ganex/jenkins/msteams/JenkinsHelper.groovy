@@ -36,27 +36,49 @@ List<String> getChanges() {
     for (int j = 0; j < entries.length; j++) {
       def entry = entries[j]
       def branch = getBranchName()
+      //def jsonEntry = """
+      //      {
+      //        "facts": [
+      //          {
+      //            "name": "Author",
+      //            "value": "${entry.author}"
+      //          },
+      //          {
+      //            "name": "Message",
+      //            "value": "${entry.msg}"
+      //          },
+      //          {
+      //            "name": "Branch",
+      //            "value": "${branch}"
+      //          },
+      //          {
+      //          "name": "ID",
+      //          "value": "${entry.commitId}"
+      //          },
+      //        ],
+      //        "markdown": true
+      //      },
+      //"""
       def jsonEntry = """
             {
-              "facts": [
+              "items": [
                 {
-                  "name": "Author",
-                  "value": "${entry.author}"
+                  "type": "TextBlock",
+                  "value": "Author: ${entry.author}"
                 },
                 {
-                  "name": "Message",
-                  "value": "${entry.msg}"
+                  "type": "TextBlock",
+                  "value": "Message: ${entry.msg}"
                 },
                 {
-                  "name": "Branch",
-                  "value": "${branch}"
+                  "type": "TextBlock",
+                  "value": "Branch: ${branch}"
                 },
                 {
-                "name": "ID",
-                "value": "${entry.commitId}"
+                  "type": "TextBlock",
+                  "value": "ID: ${entry.commitId}"
                 },
               ],
-              "markdown": true
             },
       """
       messages.add(jsonEntry)
