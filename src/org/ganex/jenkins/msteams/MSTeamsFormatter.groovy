@@ -105,7 +105,7 @@ String formatMessage(String title = '', String message = '', String testSummary 
           "body": [
             {
               "type": "Container",
-              "style": "${color}",
+              "style": "default",
               "items": [
                 {
                   "type": "TextBlock",
