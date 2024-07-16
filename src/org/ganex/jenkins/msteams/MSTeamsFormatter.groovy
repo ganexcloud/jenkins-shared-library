@@ -18,6 +18,25 @@ String formatMessageSimple(String title = '') {
       "msteams": {  
         "width": "Full"  
       }
+      "body": [
+        {
+          "type": "Container",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "${titleFormated}",
+              "weight": "Bolder",
+              "size": "Large"
+            },
+            {
+              "type": "TextBlock",
+              "text": "${titleFormated}",
+              "spacing": "None",
+              "isSubtle": true
+            },
+          ]
+        }
+      ],
     }
   """
   //def templateJson = """
