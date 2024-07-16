@@ -61,24 +61,20 @@ List<String> getChanges() {
       //"""
       def jsonEntry = """
             {
-              "items": [
-                {
-                  "type": "TextBlock",
-                  "value": "Author: ${entry.author}"
-                },
-                {
-                  "type": "TextBlock",
-                  "value": "Message: ${entry.msg}"
-                },
-                {
-                  "type": "TextBlock",
-                  "value": "Branch: ${branch}"
-                },
-                {
-                  "type": "TextBlock",
-                  "value": "ID: ${entry.commitId}"
-                },
-              ],
+              "type": "TextBlock",
+              "value": "Author: ${entry.author}"
+            },
+            {
+              "type": "TextBlock",
+              "value": "Message: ${entry.msg}"
+            },
+            {
+              "type": "TextBlock",
+              "value": "Branch: ${branch}"
+            },
+            {
+              "type": "TextBlock",
+              "value": "ID: ${entry.commitId}"
             },
       """
       messages.add(jsonEntry)
