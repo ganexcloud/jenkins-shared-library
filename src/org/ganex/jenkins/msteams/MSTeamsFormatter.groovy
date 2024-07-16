@@ -52,27 +52,6 @@ String formatMessageSimple(String title = '') {
     ]
   }
   """
-  //def templateJson = """
-  //  {
-  //    "@type": "MessageCard",
-  //    "@context": "http://schema.org/extensions",
-  //    "themeColor": "${color}",
-  //    "summary": "${titleFormated}",
-  //    "title": "${titleFormated}",
-  //    "potentialAction": [
-  //      {
-  //        "@type": "OpenUri",
-  //        "name": "View Job",
-  //        "targets": [
-  //          {
-  //            "os": "default",
-  //            "uri": "${url}"
-  //          }
-  //        ]
-  //      }
-  //    ]
-  //  }
-  //"""
   def jsonFinal = templateJson
   return jsonFinal
 }
@@ -132,31 +111,6 @@ String formatMessage(String title = '', String message = '', String testSummary 
     ]
   }
   """
-  //def templateJson = """
-  //  {
-  //    "@type": "MessageCard",
-  //    "@context": "http://schema.org/extensions",
-  //    "themeColor": "${color}",
-  //    "summary": "${titleFormated}",
-  //    "title": "${titleFormated}",
-  //    "text": "**Commits:**",
-  //    "sections": [
-  //      ${message}
-  //    ],
-  //    "potentialAction": [
-  //      {
-  //        "@type": "OpenUri",
-  //        "name": "View Job",
-  //        "targets": [
-  //          {
-  //            "os": "default",
-  //            "uri": "${url}"
-  //          }
-  //        ]
-  //      }
-  //    ]
-  //  }
-  //"""
   def jsonFinal = templateJson
   return jsonFinal
 }

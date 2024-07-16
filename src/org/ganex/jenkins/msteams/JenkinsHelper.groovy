@@ -36,29 +36,6 @@ List<String> getChanges() {
     for (int j = 0; j < entries.length; j++) {
       def entry = entries[j]
       def branch = getBranchName()
-      //def jsonEntry = """
-      //      {
-      //        "facts": [
-      //          {
-      //            "name": "Author",
-      //            "value": "${entry.author}"
-      //          },
-      //          {
-      //            "name": "Message",
-      //            "value": "${entry.msg}"
-      //          },
-      //          {
-      //            "name": "Branch",
-      //            "value": "${branch}"
-      //          },
-      //          {
-      //          "name": "ID",
-      //          "value": "${entry.commitId}"
-      //          },
-      //        ],
-      //        "markdown": true
-      //      },
-      //"""
       def jsonEntry = """
               {
                 "type": "TextBlock",
