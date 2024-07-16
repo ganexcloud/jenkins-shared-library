@@ -26,6 +26,7 @@ String formatMessageSimple(String title = '') {
           "body": [
             {
               "type": "Container",
+              "style": "${color}",
               "items": [
                 {
                   "type": "TextBlock",
@@ -104,6 +105,7 @@ String formatMessage(String title = '', String message = '', String testSummary 
           "body": [
             {
               "type": "Container",
+              "style": "${color}",
               "items": [
                 {
                   "type": "TextBlock",
