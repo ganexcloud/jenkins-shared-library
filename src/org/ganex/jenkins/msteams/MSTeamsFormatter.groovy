@@ -12,20 +12,12 @@ String formatMessageSimple(String title = '') {
   def url = helper.getAbsoluteUrl()
   def templateJson = """
     {
-      "@type": "message",
-      "attachments": [
-        {
-          "contentType": "application/vnd.microsoft.card.adaptive",
-          "content": {
-            "@type": "AdaptiveCard",
-            "\$schema":"http://adaptivecards.io/schemas/adaptive-card.json",
-            "version": "1.4",
-            "msteams": {  
-              "width": "Full"  
-            },
-          },
-        },
-      ],
+      "type": "AdaptiveCard",
+      "version": "1.4",
+      "\$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+      "msteams": {  
+        "width": "Full"  
+      }
     }
   """
   //def templateJson = """
@@ -67,28 +59,20 @@ String formatMessage(String title = '', String message = '', String testSummary 
   if(testSummary) result = "\n ${testSummary}"
   def templateJson = """
     {
-      "@type": "message",
-      "attachments": [
+      "type": "AdaptiveCard",
+      "version": "1.4",
+      "\$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+      "msteams": {  
+        "width": "Full"  
+      },  
+      "body": [
         {
-          "contentType": "application/vnd.microsoft.card.adaptive",
-          "content": {
-            "@type": "AdaptiveCard",
-            "\$schema":"http://adaptivecards.io/schemas/adaptive-card.json",
-            "version": "1.4",
-            "msteams": {  
-              "width": "Full"  
-            },  
-            "body": [
-              {
-                "@type": "Container",
-                "style": "${color}",
-                "items": [
-                  ${message}
-                ]
-              }
-            ],
-          },
-        },
+          "@type": "Container",
+          "style": "${color}",
+          "items": [
+            ${message}
+          ]
+        }
       ],
     }
   """
