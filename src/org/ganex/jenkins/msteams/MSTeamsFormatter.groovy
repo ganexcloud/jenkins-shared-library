@@ -11,25 +11,46 @@ String formatMessageSimple(String title = '') {
   def color = status.getStatusColor()
   def url = helper.getAbsoluteUrl()
   def templateJson = """
-    {
-      "@type": "MessageCard",
-      "@context": "http://schema.org/extensions",
-      "themeColor": "${color}",
-      "summary": "${titleFormated}",
-      "title": "${titleFormated}",
-      "potentialAction": [
-        {
-          "@type": "OpenUri",
-          "name": "View Job",
-          "targets": [
+{
+    "type": "message",
+    "attachments": [
+      {
+        "contentType": "application/vnd.microsoft.card.adaptive",
+        "content": {
+          "type": "AdaptiveCard",
+          "version": "1.4",
+          "\$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+          "msteams": {  
+            "width": "Full"  
+          },
+          "body": [
             {
-              "os": "default",
-              "uri": "${url}"
+              "type": "Container",
+              "style": "default",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "${titleFormated}",
+                  "weight": "Bolder",
+                  "size": "Large"
+                },
+                {
+                  "type": "ActionSet",
+                  "actions": [
+                    {
+                      "type": "Action.OpenUrl",
+                      "title": "View Job",
+                      "url": "${url}"
+                    }
+                  ]
+                }
+              ]
             }
-          ]
+          ],
         }
-      ]
-    }
+      }
+    ]
+  }
   """
   def jsonFinal = templateJson
   return jsonFinal
@@ -48,29 +69,47 @@ String formatMessage(String title = '', String message = '', String testSummary 
   if(message) result = "\n ${message.trim()}"
   if(testSummary) result = "\n ${testSummary}"
   def templateJson = """
-    {
-      "@type": "MessageCard",
-      "@context": "http://schema.org/extensions",
-      "themeColor": "${color}",
-      "summary": "${titleFormated}",
-      "title": "${titleFormated}",
-      "text": "**Commits:**",
-      "sections": [
-        ${message}
-      ],
-      "potentialAction": [
-        {
-          "@type": "OpenUri",
-          "name": "View Job",
-          "targets": [
+{
+    "type": "message",
+    "attachments": [
+      {
+        "contentType": "application/vnd.microsoft.card.adaptive",
+        "content": {
+          "type": "AdaptiveCard",
+          "version": "1.4",
+          "\$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+          "msteams": {  
+            "width": "Full"  
+          },
+          "body": [
             {
-              "os": "default",
-              "uri": "${url}"
+              "type": "Container",
+              "style": "${color}",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "${titleFormated}",
+                  "weight": "Bolder",
+                  "size": "Large"
+                },
+                ${message}
+                {
+                  "type": "ActionSet",
+                  "actions": [
+                    {
+                      "type": "Action.OpenUrl",
+                      "title": "View Job",
+                      "url": "${url}"
+                    }
+                  ]
+                }
+              ]
             }
-          ]
+          ],
         }
-      ]
-    }
+      }
+    ]
+  }
   """
   def jsonFinal = templateJson
   return jsonFinal
