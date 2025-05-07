@@ -63,11 +63,11 @@ void notifyResult() {
   def message = formatter.formatMessage "${statusMessage} after ${duration}", changes, testSummary
   def webook_url = "${env.TEAMS_WEBHOOK_URL}"
   
-  println "message: ${message}"
+  //println "message: ${message}"
   def comandoCurl = ["curl", "-X", "POST", "-H", "Content-Type: application/json", "-d", message, webook_url]
-  println "Comando curl: ${comandoCurl}"
+  //println "Comando curl: ${comandoCurl}"
   def resultadoComando = comandoCurl.execute().text
-  println "Resultado do Comando: ${resultadoComando}"
+  //println "Resultado do Comando: ${resultadoComando}"
 }
 
 void notifyResultFull() {
