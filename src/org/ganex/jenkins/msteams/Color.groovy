@@ -18,5 +18,5 @@ String blue() {
 }
 
 String gray() {
-  return 'light'
+  return 'emphasis'
 }
