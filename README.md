@@ -69,6 +69,20 @@ stage('Security Scan') {
 }
 ```
 
+#### Stage to warm the Trivy database before scans:
+
+```
+stage('Initialize') {
+  steps {
+    container('trivy') {
+      script {
+        trivyPrepareDb()
+      }
+    }
+  }
+}
+```
+
 ### Note:
 
 :information_source: There is a plan to split `Build` and `Deploy` and use **Jenkins** for building and **Spinnaker** for deploying.

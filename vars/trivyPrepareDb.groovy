@@ -1,0 +1,24 @@
+void call(Map cfg = [:]) {
+  String workspace = stringValue(cfg, 'workspace', env.WORKSPACE)
+  boolean downloadJavaDb = booleanValue(cfg, 'downloadJavaDb', false)
+
+  sh """
+    mkdir -p ${shellQuote("${workspace}/trivy-reports/")}
+    trivy image --download-db-only
+    ${downloadJavaDb ? 'trivy image --download-java-db-only' : ''}
+  """.stripIndent().trim()
+}
+
+private String stringValue(Map cfg, String key, String defaultValue) {
+  def value = cfg[key]
+  value == null ? defaultValue : value.toString()
+}
+
+private boolean booleanValue(Map cfg, String key, boolean defaultValue) {
+  def value = cfg[key]
+  value == null ? defaultValue : value as boolean
+}
+
+private String shellQuote(String value) {
+  return "'" + value.replace("'", "'\"'\"'") + "'"
+}
