@@ -51,6 +51,26 @@ stage('Start') {
 }
 ```
 
+#### Stage to run Trivy security scan using the shared helper:
+
+```
+stage('Security Scan') {
+  steps {
+    container('trivy') {
+      withEnv(['DOCKER_IMAGE=app']) {
+        script {
+          runTrivySecurityScan(
+            imageRef: "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO_NAME}/${DOCKER_IMAGE}:${BUILD_NUMBER}",
+            dockerfilePath: "${WORKSPACE}/docker/${DOCKER_IMAGE}",
+            dockerImage: env.DOCKER_IMAGE
+          )
+        }
+      }
+    }
+  }
+}
+```
+
 ### Note:
 
 :information_source: There is a plan to split `Build` and `Deploy` and use **Jenkins** for building and **Spinnaker** for deploying.
