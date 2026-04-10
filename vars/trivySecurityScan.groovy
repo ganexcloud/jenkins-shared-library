@@ -68,6 +68,7 @@ void call(Map cfg = [:]) {
         trivy config \
           --timeout ${configTimeout} \
           --exit-code ${exitCode} \
+          --severity ${severity} \
           --misconfig-scanners dockerfile \
           ${ignoreFileArg} \
           --format table \
@@ -88,12 +89,13 @@ What failed:
 - Dockerfile scan: ${statusLabel(configRc)}
 
 Reports:
+- Jenkins published report: Trivy Security Scan
 - trivy-reports/${dockerImage}-Vulnerabilities.html
 - trivy-reports/${dockerImage}-Secrets.txt
 - trivy-reports/${dockerImage}-Dockerfile.txt
 
 What to do:
-- Open the generated reports in the Jenkins build artifacts.
+- Open the "Trivy Security Scan" report published in this Jenkins build.
 - Fix CRITICAL findings in the image, dependencies or Dockerfile.
 - If the secret finding is a false positive, review `.trivy-secret.yaml` or `.trivyignore`.
 - Re-run the pipeline after the fix.
