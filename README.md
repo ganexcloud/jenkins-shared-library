@@ -57,14 +57,12 @@ stage('Start') {
 stage('Security Scan') {
   steps {
     container('trivy') {
-      withEnv(['DOCKER_IMAGE=app']) {
-        script {
-          runTrivySecurityScan(
-            imageRef: "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO_NAME}/${DOCKER_IMAGE}:${BUILD_NUMBER}",
-            dockerfilePath: "${WORKSPACE}/docker/${DOCKER_IMAGE}",
-            dockerImage: env.DOCKER_IMAGE
-          )
-        }
+      script {
+        trivySecurityScan(
+          dockerImage: 'app',
+          imageRef: "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO_NAME}/app:${BUILD_NUMBER}",
+          dockerfilePath: "${WORKSPACE}/docker/app"
+        )
       }
     }
   }

@@ -1,9 +1,9 @@
 void call(Map cfg = [:]) {
+  String dockerImage = required(cfg, 'dockerImage')
   String imageRef = required(cfg, 'imageRef')
   String dockerfilePath = required(cfg, 'dockerfilePath')
 
   String workspace = stringValue(cfg, 'workspace', env.WORKSPACE)
-  String dockerImage = stringValue(cfg, 'dockerImage', env.DOCKER_IMAGE)
   String severity = stringValue(cfg, 'severity', env.TRIVY_SEVERITY ?: 'CRITICAL')
   String exitCode = stringValue(cfg, 'exitCode', env.TRIVY_EXIT_CODE ?: '1')
 
@@ -20,67 +20,66 @@ void call(Map cfg = [:]) {
   String ignoreFileArg = fileExists(ignoreFilePath) ? "--ignorefile ${shellQuote(ignoreFilePath)}" : ''
   String secretConfigArg = fileExists(secretConfigPath) ? "--secret-config ${shellQuote(secretConfigPath)}" : ''
 
-  withEnv(["DOCKER_IMAGE=${dockerImage}"]) {
-    int vulnRc = sh(
+  int vulnRc = sh(
+    script: """
+      cd /
+      trivy image \
+        --timeout ${vulnTimeout} \
+        --exit-code ${exitCode} \
+        --severity ${severity} \
+        --scanners vuln \
+        --pkg-types os,library \
+        --no-progress \
+        ${ignoreFileArg} \
+        --format template \
+        --template @contrib/html.tpl \
+        -o ${shellQuote("${workspace}/trivy-reports/${dockerImage}-Vulnerabilities.html")} \
+        ${shellQuote(imageRef)}
+    """.stripIndent().trim(),
+    returnStatus: true
+  )
+
+  int secretRc = 0
+  if (enableSecretScan) {
+    secretRc = sh(
       script: """
         cd /
         trivy image \
-          --timeout ${vulnTimeout} \
+          --timeout ${secretTimeout} \
           --exit-code ${exitCode} \
           --severity ${severity} \
-          --scanners vuln \
-          --pkg-types os,library \
-          --no-progress \
+          --scanners secret \
           ${ignoreFileArg} \
-          --format template \
-          --template @contrib/html.tpl \
-          -o ${shellQuote("${workspace}/trivy-reports/${dockerImage}-Vulnerabilities.html")} \
+          ${secretConfigArg} \
+          --no-progress \
+          --format table \
+          -o ${shellQuote("${workspace}/trivy-reports/${dockerImage}-Secrets.txt")} \
           ${shellQuote(imageRef)}
       """.stripIndent().trim(),
       returnStatus: true
     )
+  }
 
-    int secretRc = 0
-    if (enableSecretScan) {
-      secretRc = sh(
-        script: """
-          cd /
-          trivy image \
-            --timeout ${secretTimeout} \
-            --exit-code ${exitCode} \
-            --severity ${severity} \
-            --scanners secret \
-            ${ignoreFileArg} \
-            ${secretConfigArg} \
-            --no-progress \
-            --format table \
-            -o ${shellQuote("${workspace}/trivy-reports/${dockerImage}-Secrets.txt")} \
-            ${shellQuote(imageRef)}
-        """.stripIndent().trim(),
-        returnStatus: true
-      )
-    }
+  int configRc = 0
+  if (enableDockerfileScan) {
+    configRc = sh(
+      script: """
+        cd /
+        trivy config \
+          --timeout ${configTimeout} \
+          --exit-code ${exitCode} \
+          --misconfig-scanners dockerfile \
+          ${ignoreFileArg} \
+          --format table \
+          -o ${shellQuote("${workspace}/trivy-reports/${dockerImage}-Dockerfile.txt")} \
+          ${shellQuote(dockerfilePath)}
+      """.stripIndent().trim(),
+      returnStatus: true
+    )
+  }
 
-    int configRc = 0
-    if (enableDockerfileScan) {
-      configRc = sh(
-        script: """
-          cd /
-          trivy config \
-            --timeout ${configTimeout} \
-            --exit-code ${exitCode} \
-            --misconfig-scanners dockerfile \
-            ${ignoreFileArg} \
-            --format table \
-            -o ${shellQuote("${workspace}/trivy-reports/${dockerImage}-Dockerfile.txt")} \
-            ${shellQuote(dockerfilePath)}
-        """.stripIndent().trim(),
-        returnStatus: true
-      )
-    }
-
-    if (vulnRc != 0 || secretRc != 0 || configRc != 0) {
-      error("""
+  if (vulnRc != 0 || secretRc != 0 || configRc != 0) {
+    error("""
 Security scan failed for ${dockerImage}.
 
 What failed:
@@ -98,15 +97,14 @@ What to do:
 - Fix CRITICAL findings in the image, dependencies or Dockerfile.
 - If the secret finding is a false positive, review `.trivy-secret.yaml` or `.trivyignore`.
 - Re-run the pipeline after the fix.
-      """.stripIndent().trim())
-    }
+    """.stripIndent().trim())
   }
 }
 
 private String required(Map cfg, String key) {
   def value = cfg[key]
   if (value == null || value.toString().trim().isEmpty()) {
-    error("runTrivySecurityScan: `${key}` is required")
+    error("trivySecurityScan: `${key}` is required")
   }
   value.toString()
 }
