@@ -58,16 +58,18 @@ stage('Security Scan') {
   steps {
     container('trivy') {
       script {
-        trivySecurityScan(
-          dockerImage: 'app',
-          imageRef: "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO_NAME}/app:${BUILD_NUMBER}",
-          dockerfilePath: "${WORKSPACE}/docker/app"
-        )
+        trivySecurityScan(dockerImage: 'app')
       }
     }
   }
 }
 ```
+
+By default, `trivySecurityScan` derives:
+- `imageRef` from `AWS_ACCOUNT_ID`, `AWS_REGION`, `ECR_REPO_NAME`, `BUILD_NUMBER` and `dockerImage`
+- `dockerfilePath` from `${WORKSPACE}/docker/${dockerImage}`
+
+Use explicit overrides only when the client does not follow this convention.
 
 #### Stage to download the Trivy database before scans:
 

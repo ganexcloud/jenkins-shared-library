@@ -1,9 +1,8 @@
 void call(Map cfg = [:]) {
   String dockerImage = required(cfg, 'dockerImage')
-  String imageRef = required(cfg, 'imageRef')
-  String dockerfilePath = required(cfg, 'dockerfilePath')
-
   String workspace = stringValue(cfg, 'workspace', env.WORKSPACE)
+  String imageRef = cfg.containsKey('imageRef') ? required(cfg, 'imageRef') : defaultImageRef(dockerImage)
+  String dockerfilePath = cfg.containsKey('dockerfilePath') ? required(cfg, 'dockerfilePath') : defaultDockerfilePath(workspace, dockerImage)
   String severity = stringValue(cfg, 'severity', env.TRIVY_SEVERITY ?: 'CRITICAL')
   String exitCode = stringValue(cfg, 'exitCode', env.TRIVY_EXIT_CODE ?: '1')
 
@@ -111,6 +110,14 @@ private String required(Map cfg, String key) {
   value.toString()
 }
 
+private String requiredEnv(String key, String reason) {
+  def value = env[key]
+  if (value == null || value.toString().trim().isEmpty()) {
+    error("trivySecurityScan: `${key}` is required ${reason}")
+  }
+  value.toString()
+}
+
 private String stringValue(Map cfg, String key, String defaultValue) {
   def value = cfg[key]
   value == null ? defaultValue : value.toString()
@@ -123,6 +130,23 @@ private boolean booleanValue(Map cfg, String key, boolean defaultValue) {
 
 private String statusLabel(int rc) {
   rc == 0 ? 'PASSED' : 'FAILED'
+}
+
+private String defaultImageRef(String dockerImage) {
+  String awsAccountId = requiredEnv('AWS_ACCOUNT_ID', 'when `imageRef` is not provided')
+  String awsRegion = requiredEnv('AWS_REGION', 'when `imageRef` is not provided')
+  String ecrRepoName = requiredEnv('ECR_REPO_NAME', 'when `imageRef` is not provided')
+  String buildNumber = requiredEnv('BUILD_NUMBER', 'when `imageRef` is not provided')
+
+  "${awsAccountId}.dkr.ecr.${awsRegion}.amazonaws.com/${ecrRepoName}/${dockerImage}:${buildNumber}"
+}
+
+private String defaultDockerfilePath(String workspace, String dockerImage) {
+  if (workspace == null || workspace.trim().isEmpty()) {
+    error("trivySecurityScan: `WORKSPACE` is required when `dockerfilePath` is not provided")
+  }
+
+  "${workspace}/docker/${dockerImage}"
 }
 
 private String shellQuote(String value) {
