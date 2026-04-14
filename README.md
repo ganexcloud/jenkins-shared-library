@@ -69,14 +69,14 @@ stage('Security Scan') {
 }
 ```
 
-#### Stage to warm the Trivy database before scans:
+#### Stage to download the Trivy database before scans:
 
 ```
 stage('Initialize') {
   steps {
     container('trivy') {
       script {
-        trivyPrepareDb()
+        trivyDownloadDb()
       }
     }
   }

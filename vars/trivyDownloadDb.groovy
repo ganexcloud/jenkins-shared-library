@@ -1,9 +1,10 @@
 void call(Map cfg = [:]) {
   String workspace = stringValue(cfg, 'workspace', env.WORKSPACE)
+  boolean ensureReportsDir = booleanValue(cfg, 'ensureReportsDir', true)
   boolean downloadJavaDb = booleanValue(cfg, 'downloadJavaDb', false)
 
   sh """
-    mkdir -p ${shellQuote("${workspace}/trivy-reports/")}
+    ${ensureReportsDir ? "mkdir -p ${shellQuote("${workspace}/trivy-reports/")}" : ''}
     trivy image --download-db-only
     ${downloadJavaDb ? 'trivy image --download-java-db-only' : ''}
   """.stripIndent().trim()
