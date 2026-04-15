@@ -5,8 +5,8 @@ void call(Map cfg = [:]) {
 
   sh """
     ${ensureReportsDir ? "mkdir -p ${shellQuote("${workspace}/trivy-reports/")}" : ''}
-    trivy image --download-db-only
-    ${downloadJavaDb ? 'trivy image --download-java-db-only' : ''}
+    trivy image --download-db-only --no-progress
+    ${downloadJavaDb ? 'trivy image --download-java-db-only --no-progress' : ''}
   """.stripIndent().trim()
 }
 
