@@ -18,30 +18,41 @@ void call(Map cfg = [:]) {
 
   String ignoreFileArg = fileExists(ignoreFilePath) ? "--ignorefile ${shellQuote(ignoreFilePath)}" : ''
   String secretConfigArg = fileExists(secretConfigPath) ? "--secret-config ${shellQuote(secretConfigPath)}" : ''
+  String reportDir = "${workspace}/trivy-reports"
+  String statusDir = "${reportDir}/.trivy-status-${dockerImage}"
+  String vulnStatusFile = "${statusDir}/vuln.rc"
+  String secretStatusFile = "${statusDir}/secret.rc"
+  String configStatusFile = "${statusDir}/dockerfile.rc"
 
-  int vulnRc = sh(
+  int orchestrationRc = sh(
     script: """
-      cd /
-      trivy image \
-        --timeout ${vulnTimeout} \
-        --exit-code ${exitCode} \
-        --severity ${severity} \
-        --scanners vuln \
-        --pkg-types os,library \
-        --no-progress \
-        ${ignoreFileArg} \
-        --format template \
-        --template @contrib/html.tpl \
-        -o ${shellQuote("${workspace}/trivy-reports/${dockerImage}-Vulnerabilities.html")} \
-        ${shellQuote(imageRef)}
-    """.stripIndent().trim(),
-    returnStatus: true
-  )
+      set -eu
 
-  int secretRc = 0
-  if (enableSecretScan) {
-    secretRc = sh(
-      script: """
+      mkdir -p ${shellQuote(reportDir)} ${shellQuote(statusDir)}
+      rm -f ${shellQuote(vulnStatusFile)} ${shellQuote(secretStatusFile)} ${shellQuote(configStatusFile)}
+
+      set +e
+
+      (
+        cd /
+        trivy image \
+          --timeout ${vulnTimeout} \
+          --exit-code ${exitCode} \
+          --severity ${severity} \
+          --scanners vuln \
+          --pkg-types os,library \
+          --no-progress \
+          ${ignoreFileArg} \
+          --format template \
+          --template @contrib/html.tpl \
+          -o ${shellQuote("${reportDir}/${dockerImage}-Vulnerabilities.html")} \
+          ${shellQuote(imageRef)}
+        echo \$? > ${shellQuote(vulnStatusFile)}
+      ) &
+      pid_vuln=\$!
+
+      ${enableSecretScan ? """
+      (
         cd /
         trivy image \
           --timeout ${secretTimeout} \
@@ -52,17 +63,18 @@ void call(Map cfg = [:]) {
           ${secretConfigArg} \
           --no-progress \
           --format table \
-          -o ${shellQuote("${workspace}/trivy-reports/${dockerImage}-Secrets.txt")} \
+          -o ${shellQuote("${reportDir}/${dockerImage}-Secrets.txt")} \
           ${shellQuote(imageRef)}
-      """.stripIndent().trim(),
-      returnStatus: true
-    )
-  }
+        echo \$? > ${shellQuote(secretStatusFile)}
+      ) &
+      pid_secret=\$!
+      """ : """
+      echo 0 > ${shellQuote(secretStatusFile)}
+      pid_secret=''
+      """}
 
-  int configRc = 0
-  if (enableDockerfileScan) {
-    configRc = sh(
-      script: """
+      ${enableDockerfileScan ? """
+      (
         cd /
         trivy config \
           --timeout ${configTimeout} \
@@ -71,12 +83,32 @@ void call(Map cfg = [:]) {
           --misconfig-scanners dockerfile \
           ${ignoreFileArg} \
           --format table \
-          -o ${shellQuote("${workspace}/trivy-reports/${dockerImage}-Dockerfile.txt")} \
+          -o ${shellQuote("${reportDir}/${dockerImage}-Dockerfile.txt")} \
           ${shellQuote(dockerfilePath)}
-      """.stripIndent().trim(),
-      returnStatus: true
-    )
+        echo \$? > ${shellQuote(configStatusFile)}
+      ) &
+      pid_config=\$!
+      """ : """
+      echo 0 > ${shellQuote(configStatusFile)}
+      pid_config=''
+      """}
+
+      wait "\$pid_vuln"
+      [ -n "\$pid_secret" ] && wait "\$pid_secret" || true
+      [ -n "\$pid_config" ] && wait "\$pid_config" || true
+
+      exit 0
+    """.stripIndent().trim(),
+    returnStatus: true
+  )
+
+  if (orchestrationRc != 0) {
+    error("trivySecurityScan: failed to orchestrate parallel scans for `${dockerImage}`")
   }
+
+  int vulnRc = readStatusCode(vulnStatusFile)
+  int secretRc = readStatusCode(secretStatusFile)
+  int configRc = readStatusCode(configStatusFile)
 
   if (vulnRc != 0 || secretRc != 0 || configRc != 0) {
     error("""
@@ -147,6 +179,14 @@ private String defaultDockerfilePath(String workspace, String dockerImage) {
   }
 
   "${workspace}/docker/${dockerImage}"
+}
+
+private int readStatusCode(String path) {
+  if (!fileExists(path)) {
+    error("trivySecurityScan: missing status file `${path}`")
+  }
+
+  readFile(path).trim().toInteger()
 }
 
 private String shellQuote(String value) {
