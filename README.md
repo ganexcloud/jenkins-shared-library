@@ -68,6 +68,8 @@ stage('Security Scan') {
 By default, `trivySecurityScan` derives:
 - `imageRef` from `AWS_ACCOUNT_ID`, `AWS_REGION`, `ECR_REPO_NAME`, `BUILD_NUMBER` and `dockerImage`
 - `dockerfilePath` from `${WORKSPACE}/docker/${dockerImage}`
+- `cacheDir` from `${WORKSPACE}/.trivy-cache/${dockerImage}`
+- `seedCacheDir` from `${WORKSPACE}/.trivy-cache-global`
 
 Use explicit overrides only when the client does not follow this convention.
 
@@ -84,6 +86,9 @@ stage('Initialize') {
   }
 }
 ```
+
+`trivyDownloadDb` now stores the vulnerability DB in `${WORKSPACE}/.trivy-cache-global` by default.
+`trivySecurityScan` uses an isolated cache per image and pre-populates it from the global cache when available, which avoids cache corruption when scans run in parallel.
 
 ### Note:
 
