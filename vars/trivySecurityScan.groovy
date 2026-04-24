@@ -8,6 +8,8 @@ void call(Map cfg = [:]) {
 
   String ignoreFilePath = cfg.containsKey('ignoreFile') ? stringValue(cfg, 'ignoreFile', '') : "${workspace}/.trivyignore"
   String secretConfigPath = cfg.containsKey('secretConfig') ? stringValue(cfg, 'secretConfig', '') : "${workspace}/.trivy-secret.yaml"
+  String cacheDir = stringValue(cfg, 'cacheDir', "${workspace}/.trivy-cache/${dockerImage}")
+  String seedCacheDir = stringValue(cfg, 'seedCacheDir', "${workspace}/.trivy-cache-global")
 
   String vulnTimeout = stringValue(cfg, 'vulnTimeout', '15m')
   String secretTimeout = stringValue(cfg, 'secretTimeout', '10m')
@@ -28,7 +30,12 @@ void call(Map cfg = [:]) {
     script: """
       set -eu
 
-      mkdir -p ${shellQuote(reportDir)} ${shellQuote(statusDir)}
+      export TRIVY_CACHE_DIR=${shellQuote(cacheDir)}
+
+      mkdir -p ${shellQuote(reportDir)} ${shellQuote(statusDir)} ${shellQuote(cacheDir)}
+      if [ -d ${shellQuote(seedCacheDir)} ] && [ -z "\$(find ${shellQuote(cacheDir)} -mindepth 1 -print -quit)" ]; then
+        cp -R ${shellQuote("${seedCacheDir}/.")} ${shellQuote(cacheDir)}/
+      fi
       rm -f ${shellQuote(vulnStatusFile)} ${shellQuote(secretStatusFile)} ${shellQuote(configStatusFile)}
 
       set +e
