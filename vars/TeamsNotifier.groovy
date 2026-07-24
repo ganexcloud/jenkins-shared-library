@@ -11,13 +11,7 @@ void notifyStart() {
   def user = helper.getBuildUser()
   def result = "UNSTABLE"
   def message = formatter.formatMessageSimple "Build started by ${user}..."
-  def webook_url = "${env.TEAMS_WEBHOOK_URL}"
-  //println "message: ${message}"
-  def comandoCurl = ["curl", "-X", "POST", "-H", "Content-Type: application/json", "-d", message, webook_url]
-  //println "Comando curl: ${comandoCurl}"
-  def resultadoComando = comandoCurl.execute().text
-  //println "Resultado do Comando: ${resultadoComando}"
-  //sender.send title, message, result, url
+  sender.sendWebhook(this, message)
 }
 
 
@@ -61,13 +55,7 @@ void notifyResult() {
   }
 
   def message = formatter.formatMessage "${statusMessage} after ${duration}", changes, testSummary
-  def webook_url = "${env.TEAMS_WEBHOOK_URL}"
-  
-  //println "message: ${message}"
-  def comandoCurl = ["curl", "-X", "POST", "-H", "Content-Type: application/json", "-d", message, webook_url]
-  //println "Comando curl: ${comandoCurl}"
-  def resultadoComando = comandoCurl.execute().text
-  //println "Resultado do Comando: ${resultadoComando}"
+  sender.sendWebhook(this, message)
 }
 
 void notifyResultFull() {
