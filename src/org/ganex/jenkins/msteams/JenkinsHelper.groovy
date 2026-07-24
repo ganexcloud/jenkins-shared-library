@@ -29,39 +29,23 @@ String getBuildUser() {
   }
 }
 
-List<String> getChanges() {
-  List<String> messages = []
+List<Map> getChanges() {
+  List<Map> items = []
   for (int i = 0; i < currentBuild.changeSets.size(); i++) {
     def entries = currentBuild.changeSets[i].items
     for (int j = 0; j < entries.length; j++) {
       def entry = entries[j]
       def branch = getBranchName()
-      def jsonEntry = """
-              {
-                "type": "TextBlock",
-                "text": "**Author:** ${entry.author}"
-              },
-              {
-                "type": "TextBlock",
-                "text": "**Message:** ${entry.msg}",
-                "spacing": "none"
-              },
-              {
-                "type": "TextBlock",
-                "text": "**Branch:** ${branch}",
-                "spacing": "none"
-              },
-              {
-                "type": "TextBlock",
-                "value": "**ID:** ${entry.commitId}",
-                "spacing": "none"
-              },
-      """
-      messages.add(jsonEntry)
+      items.addAll([
+        [type: 'TextBlock', text: "**Author:** ${entry.author}"],
+        [type: 'TextBlock', text: "**Message:** ${entry.msg}", spacing: 'none', wrap: true],
+        [type: 'TextBlock', text: "**Branch:** ${branch}", spacing: 'none', wrap: true],
+        [type: 'TextBlock', text: "**ID:** ${entry.commitId}", spacing: 'none', wrap: true]
+      ])
     }
   }
 
-  return messages
+  return items
 }
 
 String getDuration() {

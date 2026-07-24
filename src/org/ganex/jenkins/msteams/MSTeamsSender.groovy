@@ -25,7 +25,10 @@ curl --silent --show-error --output /dev/null --write-out '%{http_code}' \\
       steps.echo("Teams notification was not accepted (HTTP ${httpCode ?: 'transport error'})")
     }
   } finally {
-    steps.sh returnStatus: true, script: "rm -f ${payloadFile}"
+    steps.sh returnStatus: true, script: """#!/bin/sh
+set +x
+rm -f -- ${payloadFile}
+"""
   }
 }
 

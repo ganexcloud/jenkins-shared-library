@@ -46,8 +46,8 @@ void notifyResult() {
   }
   def result = helper.getCurrentStatus()
   def duration = helper.getDuration()
-  String changes = null
-  if(config.getChangeList()) changes = helper.getChanges().join '\n'
+  List<Map> changes = []
+  if(config.getChangeList()) changes = helper.getChanges()
   String testSummary = null
   if (config.getTestSummary()) {
     JenkinsTestsSummary jenkinsTestsSummary = new JenkinsTestsSummary()

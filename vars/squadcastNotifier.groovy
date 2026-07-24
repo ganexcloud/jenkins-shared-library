@@ -1,5 +1,5 @@
 #!/usr/bin/env groovy
-def call(String action) {
+def call(String action = 'result') {
   def additionalArgs
   def priority = "${env.PRIORITY}"
   if(action == "start") {
